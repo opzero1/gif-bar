@@ -4,6 +4,15 @@ Small native macOS 14+ menu bar helper for turning GIF links into Slack-friendly
 
 ## Use
 
+Install with Homebrew:
+
+```sh
+brew tap opzero1/tap
+brew install --cask gifbar
+```
+
+Or build locally:
+
 1. Build the app:
 
    ```sh
