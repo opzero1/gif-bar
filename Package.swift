@@ -13,12 +13,12 @@ let package = Package(
     targets: [
         .executableTarget(
             name: "GifBar",
-            path: "Sources/Santa"
+            path: "Sources/GifBar"
         ),
         .testTarget(
-            name: "SantaTests",
+            name: "GifBarTests",
             dependencies: ["GifBar"],
-            path: "Tests/SantaTests"
+            path: "Tests/GifBarTests"
         )
     ]
 )

@@ -1,6 +1,6 @@
 # GifBar
 
-Small native macOS 14+ menu bar helper for turning GIF links into Slack-friendly CDN links.
+Small native macOS 14+ menu bar helper for searching Giphy and copying Slack-friendly CDN GIF links.
 
 ## Use
 
@@ -21,14 +21,15 @@ Or build locally:
 
 2. Open `dist/GifBar.app`.
 3. Click the GifBar icon in the macOS menu bar.
-4. Drag in a Giphy media URL, Giphy page URL, or direct hosted `.gif` URL.
-5. Click `Copy URL` for the raw CDN URL, or `Copy Slack Link` for Slack mrkdwn:
+4. Add a Giphy API key when prompted. GifBar also reads `GIPHY_API_KEY` when launched from a shell.
+5. Search Giphy.
+6. Click a GIF result to copy its CDN GIF URL:
 
    ```text
-   <https://media0.giphy.com/media/Ke97StdZZrPRbefL6D/200.gif|gif>
+   https://media0.giphy.com/media/Ke97StdZZrPRbefL6D/200.gif?cid=...&rid=200.gif&ct=g
    ```
 
-Local GIF files are detected, but they cannot become Slack-previewable links until a CDN uploader is configured.
+Clicked GIFs are saved in Recent with metadata from Giphy, including title, creator, rating, source domain, and tags when available.
 
 ## Development
 

@@ -7,38 +7,28 @@ final class GifLibrary: ObservableObject {
     }
 
     private let defaultsKey = "gifbar.gif-library.v1"
-    private let legacyDefaultsKey = "santa.gif-library.v1"
-
     init() {
         load()
     }
 
-    func add(_ item: GifItem) {
+    @discardableResult
+    func add(_ item: GifItem) -> GifItem {
+        if let giphyID = item.giphyID, let existingIndex = items.firstIndex(where: { $0.giphyID == giphyID }) {
+            var existing = items.remove(at: existingIndex)
+            existing.createdAt = Date()
+            items.insert(existing, at: 0)
+            return existing
+        }
+
         if let cdnURL = item.cdnURL, let existingIndex = items.firstIndex(where: { $0.cdnURL == cdnURL }) {
             var existing = items.remove(at: existingIndex)
             existing.createdAt = Date()
             items.insert(existing, at: 0)
-            return
+            return existing
         }
 
         items.insert(item, at: 0)
-    }
-
-    func resolveAndAdd(_ value: String?) async -> GifItem? {
-        guard let value, !value.trimmingCharacters(in: .whitespacesAndNewlines).isEmpty else {
-            let item = GiphyConverter.unresolvedItem(from: value)
-            add(item)
-            return item
-        }
-
-        let item = await GiphyConverter.resolveItem(from: value)
-        add(item)
         return item
-    }
-
-    func update(_ item: GifItem) {
-        guard let index = items.firstIndex(where: { $0.id == item.id }) else { return }
-        items[index] = item
     }
 
     func remove(_ item: GifItem) {
@@ -50,9 +40,10 @@ final class GifLibrary: ObservableObject {
     }
 
     private func load() {
-        guard let data = UserDefaults.standard.data(forKey: defaultsKey) ?? UserDefaults.standard.data(forKey: legacyDefaultsKey) else { return }
+        guard let data = UserDefaults.standard.data(forKey: defaultsKey) else { return }
         do {
             items = try JSONDecoder().decode([GifItem].self, from: data)
+                .filter { $0.cdnURL != nil }
         } catch {
             items = []
         }
